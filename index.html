@@ -318,10 +318,10 @@ async function api(p){
 function showLoading(t='Loading…'){document.getElementById('loadingText').textContent=t;document.getElementById('loadingOverlay').style.display='flex';}
 function hideLoading(){document.getElementById('loadingOverlay').style.display='none';}
 
-window.addEventListener('DOMContentLoaded',async()=>{
-  try{await api({action:'initSheet'});}catch(e){}
+window.addEventListener('DOMContentLoaded',()=>{
   hideLoading();
   document.getElementById('loginPage').style.display='flex';
+  fetch(SCRIPT_URL+'?action=initSheet').catch(()=>{});
 });
 
 async function doLogin(){
