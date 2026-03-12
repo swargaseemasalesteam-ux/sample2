@@ -466,10 +466,10 @@ function reqCard(l,compact){
     <div>
       <div class="req-name">${l.userName||l.user}</div>
       <div class="req-meta">
-        <span>📅 <strong>${l.date}</strong></span>
+        <span>📅 <strong>${cleanDate(l.date)}</strong></span>
         <span>${l.type==='weekoff'?'🌿 Week-off':'🏖️ Leave'}</span>
         ${badge} ${reason}
-        <span style="font-size:12px;">Applied ${l.appliedOn}</span>
+        <span style="font-size:12px;">Applied ${cleanDate(l.appliedOn)}</span>
       </div>
     </div>
     ${actions}
@@ -555,9 +555,19 @@ function renderAttendanceTable(){
 
 // ── CALENDAR ──────────────────────────────
 function changeMonth(d){calDate=new Date(calDate.getFullYear(),calDate.getMonth()+d,1);renderCalendar();}
+function cleanDate(d){
+  if(!d)return '';
+  // Handle ISO timestamps like 2026-03-15T18:30:00.000Z -> 2026-03-15
+  if(String(d).includes('T'))return String(d).slice(0,10);
+  return String(d).slice(0,10);
+}
 function renderCalendar(){
   const dateMap={};
-  allLeaves.forEach(l=>{if(!dateMap[l.date])dateMap[l.date]=[];dateMap[l.date].push(l);});
+  allLeaves.forEach(l=>{
+    const key=cleanDate(l.date);
+    if(!dateMap[key])dateMap[key]=[];
+    dateMap[key].push({...l,date:key});
+  });
   const today=new Date();today.setHours(0,0,0,0);
   const y=calDate.getFullYear(),m=calDate.getMonth();
   document.getElementById('calMonth').textContent=new Date(y,m,1).toLocaleString('default',{month:'long',year:'numeric'});
