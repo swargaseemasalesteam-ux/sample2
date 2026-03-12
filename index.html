@@ -255,7 +255,7 @@ tr:hover td{background:var(--surface2);}
         <div class="page-sub">Week-off balances and leave summary</div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Member</th><th>Week-offs Used</th><th>Quota Left</th><th>Pending</th><th>Approved</th><th>Denied</th></tr></thead>
+            <thead><tr><th>Member</th><th>🌿 Week-offs Used</th><th>Week-offs Left</th><th>🏖️ Leaves Taken</th><th>Pending</th><th>Approved</th><th>Denied</th></tr></thead>
             <tbody id="membersTable"></tbody>
           </table>
         </div>
@@ -492,7 +492,7 @@ async function actLeave(id,status){
 
 // ── MEMBERS ──────────────────────────────
 function renderMembers(members){
-  if(!members||!members.length){document.getElementById('membersTable').innerHTML=`<tr><td colspan="6"><div class="empty-state">No members found.</div></td></tr>`;return;}
+  if(!members||!members.length){document.getElementById('membersTable').innerHTML=`<tr><td colspan="7"><div class="empty-state">No members found.</div></td></tr>`;return;}
   document.getElementById('membersTable').innerHTML=members.map(m=>{
     const idx=ULIST.indexOf(m.username);
     const color=COLORS[Math.max(0,idx)%COLORS.length];
@@ -508,6 +508,7 @@ function renderMembers(members){
         <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${pct>=100?'var(--sold)':color};"></div></div>
       </td>
       <td><span style="color:${(m.weekoffLeft||0)<=0?'var(--sold)':'var(--avail)'};font-weight:700;">${m.weekoffLeft||0} left</span></td>
+      <td><span style="color:var(--sold);font-weight:700;">${m.leavesUsed||0}</span></td>
       <td><span style="color:var(--amber);font-weight:700;">${m.pending||0}</span></td>
       <td><span style="color:var(--avail);font-weight:700;">${m.approved||0}</span></td>
       <td><span style="color:var(--sold);font-weight:700;">${m.denied||0}</span></td>
